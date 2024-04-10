@@ -7,5 +7,8 @@ namespace DotShooting
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
 
+        void Start()
+        {
+        }
     }
 }

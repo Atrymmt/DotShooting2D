@@ -1,18 +1,24 @@
 using System.Collections;
 using System;
 using UnityEngine;
+using TMPro;
 
 namespace DotShooting
 {
     public class PlayerControl : SingletonMonoBehaviour<PlayerControl>
     {
         [SerializeField] GameObject _bullet;
+        [SerializeField] GameObject _heartPanel;
+        [SerializeField] GameObject _heart;
+        [SerializeField] TextMeshProUGUI _totalScore;
 
-        Rigidbody2D _rb;
         float _playerSpeed = 4.0f;
-
         float _timer = 0.0f;
         float _shootingRate = 0.2f;
+        int _HP = 3;
+        GameObject[] _life;
+
+        public float _score = 0;
 
         private void PlayerMove()
         {
@@ -48,15 +54,42 @@ namespace DotShooting
                 _timer -= Time.deltaTime;
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.name == "EnemyBullet(Clone)")
+            {
+                Destroy(collision.gameObject);
+                _HP--;
+                _life[_HP].SetActive(false);
+                if (_HP == 0)
+                    Destroy(this.gameObject);
+            }
+        }
+
+        private void ShowHeart(int hp)
+        {
+            for (int i = 0; i < hp; i++)
+            {
+                var f = Instantiate(_heart);
+                f.SetActive(true);
+                f.transform.SetParent(_heartPanel.transform);
+                f.transform.position = new Vector3(_heartPanel.transform.position.x + 0.7f + 0.5f * i, _heartPanel.transform.position.y + 0.08f, 0);
+                _life[i] = f;
+            }
+        }
+
         void Start()
         {
-            _rb = this.GetComponent<Rigidbody2D>();
+            _life = new GameObject[_HP];
+            ShowHeart(_HP);
+            _totalScore.text = _score.ToString();
         }
 
         void Update()
         {
             PlayerMove();
             ShootBullet();
+            _totalScore.text = _score.ToString();
         }
     }
 }
