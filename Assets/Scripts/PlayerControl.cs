@@ -12,21 +12,21 @@ namespace DotShooting
         [SerializeField] GameObject _heart;
         [SerializeField] TextMeshProUGUI _totalScore;
 
-        float _playerSpeed = 4.0f;
-        float _timer = 0.0f;
-        float _shootingRate = 0.2f;
-        int _HP = 3;
+        float _playerSpeed;
+        float _timer;
+        float _shootingRate;
         GameObject[] _life;
 
-        public float _score = 0;
+        public int Å@_HP;
+        public float _score;
 
         private void PlayerMove()
         {
-            if (Input.GetKey(KeyCode.W) && this.transform.position.y < 5.0f)
+            if (Input.GetKey(KeyCode.W) && this.transform.position.y < 4.0f)
             {
                 this.transform.position += this.transform.up * _playerSpeed * Time.deltaTime;
             }
-            if (Input.GetKey(KeyCode.S) && this.transform.position.y > -5.0f)
+            if (Input.GetKey(KeyCode.S) && this.transform.position.y > -4.5f)
             {
                 this.transform.position -= this.transform.up * _playerSpeed * Time.deltaTime;
             }
@@ -54,15 +54,32 @@ namespace DotShooting
                 _timer -= Time.deltaTime;
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerEnter2D(Collider2D collider)         //ìGíeÇ…Ç‘Ç¬Ç©Ç¡ÇΩèÍçá
         {
-            if (collision.gameObject.name == "EnemyBullet(Clone)")
+            if (collider.gameObject.name == "EnemyBullet(Clone)")
             {
-                Destroy(collision.gameObject);
+                Destroy(collider.gameObject);
                 _HP--;
                 _life[_HP].SetActive(false);
                 if (_HP == 0)
+                {
                     Destroy(this.gameObject);
+                    GameManager.instance.GameOver();
+                }
+            }
+        }
+        
+        private void OnCollisionEnter2D(Collision2D collision)      //ìGÇ∆Ç‘Ç¬Ç©Ç¡ÇΩèÍçá
+        {
+            if(collision.gameObject.name != "PlayerBullet(Clone)")
+            {
+                _HP--;
+                _life[_HP].SetActive(false);
+                if (_HP == 0)
+                {
+                    Destroy(this.gameObject);
+                    GameManager.instance.GameOver();
+                }
             }
         }
 
@@ -78,6 +95,17 @@ namespace DotShooting
             }
         }
 
+        void Awake()
+        {
+            //ÉVÅ[ÉìëJà⁄å„ÇÃÇΩÇﬂÇ…ílÇÃèâä˙âªÇÇ±Ç±Ç≈çsÇ§
+            _playerSpeed = 5.0f;
+            _timer = 0.0f;
+            _shootingRate = 0.2f;
+            _HP = 3;
+        Å@Å@_score = 0;
+            Time.timeScale = 1.0f;
+        }
+
         void Start()
         {
             _life = new GameObject[_HP];
@@ -85,7 +113,7 @@ namespace DotShooting
             _totalScore.text = _score.ToString();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             PlayerMove();
             ShootBullet();

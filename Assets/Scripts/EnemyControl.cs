@@ -8,10 +8,12 @@ namespace DotShooting
     {
         [SerializeField] GameObject _bullet;
 
-        //インスタンス化したときにここの数値を設定するようにする
         float _timer = 0.0f;
+
+        //インスタンス化したときにここの数値を設定するようにする
         float _shootingRate = 0.4f;
         float _score = 100;
+        float _HP = 1;
 
         private void ShootBullet()
         {
@@ -33,15 +35,15 @@ namespace DotShooting
             {
                 Destroy(collision.gameObject);
                 PlayerControl.instance._score += _score;
-                //_HP--;
-                //if (_HP == 0)
-                //    Destroy(this.gameObject);
+                _HP--;
+                if (_HP == 0)
+                    Destroy(this.gameObject);
             }
         }
 
         void Update()
         {
-            //ShootBullet();
+            ShootBullet();
         }
     }
 }
