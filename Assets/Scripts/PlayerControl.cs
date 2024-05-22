@@ -17,27 +17,17 @@ namespace DotShooting
         float _shootingRate;
         GameObject[] _life;
 
-        public int 　_HP;
-        public float _score;
+        int _HP;
+        int _offset = 10000;
+        long _preScore = 0;
+        public static long _score;
 
         private void PlayerMove()
         {
-            if (Input.GetKey(KeyCode.W) && this.transform.position.y < 4.0f)
-            {
-                this.transform.position += this.transform.up * _playerSpeed * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.S) && this.transform.position.y > -4.5f)
-            {
-                this.transform.position -= this.transform.up * _playerSpeed * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.D) && this.transform.position.x < 8.0f)
-            {
-                this.transform.position += this.transform.right * _playerSpeed * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.A) && this.transform.position.x > -8.0f)
-            {
-                this.transform.position -= this.transform.right * _playerSpeed * Time.deltaTime;
-            }
+            Rigidbody2D _rb = GetComponent<Rigidbody2D>();
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+            _rb.velocity = new Vector2 (x, y) * _playerSpeed;
         }
 
         private void ShootBullet()
@@ -71,7 +61,7 @@ namespace DotShooting
         
         private void OnCollisionEnter2D(Collision2D collision)      //敵とぶつかった場合
         {
-            if(collision.gameObject.name != "PlayerBullet(Clone)")
+            if(collision.gameObject.tag == "Enemy")
             {
                 _HP--;
                 _life[_HP].SetActive(false);
@@ -95,13 +85,26 @@ namespace DotShooting
             }
         }
 
+        private void PowerUp(long score)
+        {
+            if (_shootingRate > 0.1f && (_preScore / _offset != score / _offset))
+                _shootingRate -= 0.1f * (score / _offset);
+
+            //if (_preScore / _offset != score / _offset)
+            //{
+            //    _HP++;
+            //    ShowHeart(_HP);
+            //}
+            _preScore = score;
+        }
+
         void Awake()
         {
             //シーン遷移後のために値の初期化をここで行う
-            _playerSpeed = 5.0f;
+            _playerSpeed = 6.0f;
             _timer = 0.0f;
-            _shootingRate = 0.2f;
-            _HP = 3;
+            _shootingRate = 0.6f;
+            _HP = 5;
         　　_score = 0;
             Time.timeScale = 1.0f;
         }
@@ -118,6 +121,7 @@ namespace DotShooting
             PlayerMove();
             ShootBullet();
             _totalScore.text = _score.ToString();
+            PowerUp(_score);
         }
     }
 }

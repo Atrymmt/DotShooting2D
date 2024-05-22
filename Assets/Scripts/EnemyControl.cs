@@ -8,12 +8,21 @@ namespace DotShooting
     {
         [SerializeField] GameObject _bullet;
 
-        float _timer = 0.0f;
+        float _timer;
+        float _shootingRate = 0.4f;
+        bool  _isBoss = false;
 
         //インスタンス化したときにここの数値を設定するようにする
-        float _shootingRate = 0.4f;
-        float _score = 100;
-        float _HP = 1;
+        public float _moveSpeed;
+        public long  _score;
+        public float _HP;
+
+        private void Move()
+        {
+            this.transform.position -= this.transform.right * _moveSpeed * Time.deltaTime;
+            if(this.transform.position.x < -10f)
+                Destroy(this.gameObject);
+        }
 
         private void ShootBullet()
         {
@@ -34,16 +43,24 @@ namespace DotShooting
             if (collision.gameObject.name == "PlayerBullet(Clone)")
             {
                 Destroy(collision.gameObject);
-                PlayerControl.instance._score += _score;
                 _HP--;
                 if (_HP == 0)
+                {
+                    PlayerControl._score += _score;
                     Destroy(this.gameObject);
+                }
             }
         }
 
-        void Update()
+        void Start()
         {
-            ShootBullet();
+            _timer = 0f;
+        }
+
+        void FixedUpdate()
+        {
+            //ShootBullet();
+            Move();
         }
     }
 }

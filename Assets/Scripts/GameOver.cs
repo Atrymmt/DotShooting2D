@@ -24,8 +24,8 @@ namespace DotShooting
 
         void Start()
         {
-            //float score = PlayerControl.instance._score;
-            //_playerScore.text = score.ToString();
+            long score = PlayerControl._score;
+            _playerScore.text = score.ToString();
             _restartBtn.onClick.AddListener(() => SceneManager.LoadScene("PlayScene"));
             _exitBtn.onClick.AddListener(() => GameQuit());
         }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5567563985819987691}
   m_Layer: 0
   m_Name: CubeEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: b29595e6b132a0944bfdb86620903ddf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -144,3 +144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bullet: {fileID: 76653828893916140, guid: 0ce7871a224dd2d45bbe160718a8fe7f, type: 3}
+  _moveSpeed: 4
+  _score: 0
+  _HP: 0
