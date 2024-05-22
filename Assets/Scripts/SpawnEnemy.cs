@@ -40,8 +40,8 @@ namespace DotShooting
                 f.SetActive(true);
                 f.transform.SetParent(this.transform);
                 f.transform.localPosition = new Vector3(1.0f, -430, 0);
-                f.GetComponent<EnemyControl>()._moveSpeed = _moveSpeed / 2;
-                f.GetComponent<EnemyControl>()._score = 1000;
+                f.GetComponent<EnemyControl>()._moveSpeed = _moveSpeed / 3;
+                f.GetComponent<EnemyControl>()._score = 1000 * (_sumofEnemy / 10);
                 f.GetComponent<EnemyControl>()._HP = _sumofEnemy;
                 _timer = 10.0f;
             }
