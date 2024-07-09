@@ -30,7 +30,7 @@ namespace DotShooting
                 _isPlayer = false;
         }
 
-        void Update()
+        void FixedUpdate()
         {
             BulletMove();
         }
