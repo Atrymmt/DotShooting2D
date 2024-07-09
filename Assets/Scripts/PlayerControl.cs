@@ -12,7 +12,6 @@ namespace DotShooting
         [SerializeField] GameObject _heart;
         [SerializeField] TextMeshProUGUI _totalScore;
 
-        AudioSource _audio;
         float _playerSpeed;
         float _timer;
         float _shootingRate;
@@ -35,10 +34,9 @@ namespace DotShooting
         {
             if (Input.GetKey(KeyCode.Space) && _timer <= 0.0f)
             {
-                _audio.Play();
                 var f = Instantiate(_bullet);
                 f.SetActive(true);
-                f.transform.position = new Vector3(this.transform.position.x + 0.85f, this.transform.position.y - 0.19f, 0);
+                f.transform.position = new Vector3(this.transform.position.x + 0.85f, this.transform.position.y, 0);
                 _timer = _shootingRate;
             }
 
@@ -114,7 +112,6 @@ namespace DotShooting
         void Start()
         {
             _life = new GameObject[_HP];
-            _audio = gameObject.GetComponent<AudioSource>();
             ShowHeart(_HP);
             _totalScore.text = _score.ToString();
         }
