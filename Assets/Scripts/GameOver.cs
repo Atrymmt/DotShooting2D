@@ -10,8 +10,12 @@ namespace DotShooting
     public class GameOver : SingletonMonoBehaviour<GameOver>
     {
         [SerializeField] TextMeshProUGUI _playerScore;
+        [SerializeField] TextMeshProUGUI _playerHighScore;
         [SerializeField] Button _restartBtn;
         [SerializeField] Button _exitBtn;
+        
+        long _score = 0;
+        long _highScore = 0;
 
         private void GameQuit()
         {
@@ -22,10 +26,26 @@ namespace DotShooting
 #endif
         }
 
+        private void ShowScore()
+        {
+            _score = PlayerControl._score;
+            _highScore = PlayerControl._highScore;
+            _playerScore.text = _score.ToString();
+
+            if (_score == _highScore)
+            {
+                _playerHighScore.text = _highScore.ToString() + "   NEW!!!";
+            }
+            else
+            {
+                _playerHighScore.text = _highScore.ToString();
+            }
+        }
+
+
         void Start()
         {
-            long score = PlayerControl._score;
-            _playerScore.text = score.ToString();
+            ShowScore();
             _restartBtn.onClick.AddListener(() => SceneManager.LoadScene("PlayScene"));
             _exitBtn.onClick.AddListener(() => GameQuit());
         }

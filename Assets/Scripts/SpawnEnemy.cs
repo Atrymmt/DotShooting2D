@@ -11,10 +11,8 @@ namespace DotShooting
         [SerializeField] GameObject _bigBallEnemy;
         GameObject[] _wave;
         int _sumofEnemy = 1;
-        int _preSum = 0;
         float _moveSpeed = 3.0f;
 
-        int _offset = 50;
         float _timer = 0f;
         float _spawnRate = 1.5f;
 
@@ -32,8 +30,8 @@ namespace DotShooting
         private void GenerateEnemy()
         {
             var rand  = new System.Random();
-            int index = rand.Next(1, 9);
-            int type  = index % 2; 
+            int index = rand.Next(0, 10);
+            int type  = rand.Next(0, 10) % 2; 
             if (_sumofEnemy % 10 == 0)
             {
                 var f = Instantiate(_bigBallEnemy);
@@ -41,8 +39,8 @@ namespace DotShooting
                 f.transform.SetParent(this.transform);
                 f.transform.localPosition = new Vector3(1.0f, -430, 0);
                 f.GetComponent<EnemyControl>()._moveSpeed = _moveSpeed / 3;
-                f.GetComponent<EnemyControl>()._score = 1000 * (_sumofEnemy / 10);
-                f.GetComponent<EnemyControl>()._HP = _sumofEnemy;
+                f.GetComponent<EnemyControl>()._score = 1000;
+                f.GetComponent<EnemyControl>()._HP = 20;
                 _timer = 10.0f;
             }
             else if(type % 2 == 0 ) 
@@ -71,14 +69,14 @@ namespace DotShooting
 
         private void UpdataSpawn() 
         {
-            if(_sumofEnemy / _offset != _preSum / _offset)
+            if(_sumofEnemy == 30)
             {
-                if (_spawnRate > 0.5f)
-                    _spawnRate -= 0.5f * (_sumofEnemy / _offset);
-                if (_moveSpeed < 8.0f)
-                    _moveSpeed += 1.0f * (_sumofEnemy / _offset);
+                if (_spawnRate > 0.3f)
+                    _spawnRate -= 0.3f;
+                if (_moveSpeed < 9.0f)
+                    _moveSpeed += 1.5f;
+                _sumofEnemy = 0;
             }
-            _preSum = _sumofEnemy;
         }
 
         void Start()
