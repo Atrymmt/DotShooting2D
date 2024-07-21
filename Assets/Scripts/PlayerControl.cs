@@ -25,7 +25,7 @@ namespace DotShooting
         GameObject[] _life;
 
         int _HP;
-        int _offset = 10000;
+        int _offset = 5000;
         long _preScore = 0;
         public static long _score;
         public static long _highScore;
@@ -132,13 +132,8 @@ namespace DotShooting
         private void PowerUp(long score)
         {
             if (_shootingRate > 0.1f && (_preScore / _offset != score / _offset))
-                _shootingRate -= 0.1f * (score / _offset);
+                _shootingRate -= 0.1f;
 
-            //if (_preScore / _offset != score / _offset)
-            //{
-            //    _HP++;
-            //    ShowHeart(_HP);
-            //}
             _preScore = score;
         }
 
