@@ -22,6 +22,7 @@ namespace DotShooting
         int _offset = 10000;
         long _preScore = 0;
         public static long _score;
+        public static long _highScore;
 
         private void PlayerMove()
         {
@@ -55,6 +56,10 @@ namespace DotShooting
                 _life[_HP].SetActive(false);
                 if (_HP == 0)
                 {
+                    if (_score > _highScore)
+                    {
+                        _highScore = _score;
+                    }
                     Destroy(this.gameObject);
                     GameManager.instance.GameOver();
                 }
@@ -69,6 +74,10 @@ namespace DotShooting
                 _life[_HP].SetActive(false);
                 if (_HP == 0)
                 {
+                    if(_score > _highScore)
+                    {
+                        _highScore = _score;
+                    }
                     Destroy(this.gameObject);
                     GameManager.instance.GameOver();
                 }
